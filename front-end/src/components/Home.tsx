@@ -8,6 +8,8 @@ import OrderItems from "./OrderItems";
 import Map from "./Map";
 import Select from "./Select";
 import { Order as OrderType, type PaginatedResponse } from "../types/api.types";
+import { BASE_API_URL, SORT_OPTIONS, sortOrders } from "../utils";
+import { SortKey } from "../types/types";
 
 const Home = () => {
   const [selectedOrderId, setSelectedOrderId] = useState<number>(1);
@@ -22,10 +24,14 @@ const Home = () => {
     isFetchingNextPage,
     isLoading,
     isError,
+    dataUpdatedAt
   } = useInfiniteQuery({
     queryKey: ["orders", { filter: hasUndeliveredOrdersFilter }],
-    queryFn: ({ pageParam = 1, queryKey }) =>
-      fetchPage({ pageParam, queryKey }),
+    queryFn: ({ pageParam = 1, queryKey }) => {
+      const lastFetchedAt: string = String(dataUpdatedAt)
+
+      return fetchPage({ pageParam, queryKey, lastFetchedAt })
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next?.page || undefined,
     getPreviousPageParam: (firstPage) => firstPage.previous?.page || undefined,
@@ -37,32 +43,13 @@ const Home = () => {
     [data?.pages],
   );
 
-  const sortedOrders = useMemo(() => {
-    if (!sortKey) return flattenOrders;
+  const sortedOrders = useMemo(() => sortOrders(flattenOrders, sortKey), [flattenOrders, sortKey]);
 
-    return [...flattenOrders].sort((a, b) => {
-      switch (sortKey) {
-        case SortKey.Title:
-          return a.title.localeCompare(b.title);
-        case SortKey.Status:
-          return a.status.localeCompare(b.status);
-        case SortKey.OrderTime:
-          return (
-            new Date(a.orderTime).getTime() - new Date(b.orderTime).getTime()
-          );
-        default:
-          return 0;
-      }
-    });
-  }, [flattenOrders, sortKey]);
-
-  const selectedOrder = useMemo(() => {
-    return flattenOrders.find((order) => order.id === selectedOrderId);
-  }, [flattenOrders, selectedOrderId]);
+  const selectedOrder = useMemo(() => flattenOrders.find((order) => order.id === selectedOrderId), [flattenOrders, selectedOrderId]);
 
   if (isLoading) return <>Loading...</>;
 
-  if (isError) return <div>Error fetching data</div>;
+  if (isError) return <div>Error Fetching Data</div>;
 
   return (
     <div className="flex border p-2 gap-2">
@@ -93,11 +80,10 @@ const Home = () => {
           {sortedOrders.map(({ id, title, orderTime, status }) => (
             <li
               key={id}
-              className={`w-full ${
-                selectedOrderId === id
-                  ? "bg-blue-300"
-                  : "bg-gray-200 hover:bg-opacity-0"
-              }`}>
+              className={`w-full ${selectedOrderId === id
+                ? "bg-blue-300"
+                : "bg-gray-200 hover:bg-opacity-0"
+                }`}>
               <Order
                 id={id}
                 title={title}
@@ -113,11 +99,10 @@ const Home = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
-              className={`py-2 px-4 rounded-lg font-semibold w-10${
-                isFetchingNextPage
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600 focus:outline-none"
-              }`}>
+              className={`py-2 px-4 rounded-lg font-semibold w-10${isFetchingNextPage
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                }`}>
               {isFetchingNextPage ? "Loading more..." : "Load More"}
             </button>
           )}
@@ -143,17 +128,26 @@ const Home = () => {
 const fetchPage = async ({
   pageParam = 1,
   queryKey,
+  lastFetchedAt
 }: {
   pageParam: number;
-  queryKey: any;
-}): Promise<PaginatedResponse> => {
-  const [, { filter }] = queryKey;
+  queryKey: (string | {
+    filter: boolean;
+  })[];
+  lastFetchedAt: string;
 
-  const url = new URL("http://localhost:3000/api/orders");
+}): Promise<PaginatedResponse> => {
+
+  const { filter } = queryKey[1] as {
+    filter: boolean;
+  }
+
+  const url = new URL(`${BASE_API_URL}/orders`);
 
   const params: Record<string, string> = {
     page: pageParam.toString(),
     limit: "10",
+    lastFetchedAt,
     ...(filter && {
       filter: "notDelivered",
     }),
@@ -168,13 +162,6 @@ const fetchPage = async ({
   return response.json();
 };
 
-enum SortKey {
-  Title = "Title",
-  OrderTime = "Order Time",
-  Status = "Status",
-}
-
-const SORT_OPTIONS = ["Default (Unsorted)", ...Object.values(SortKey)];
-const INTERVAL_MS = 9000;
+const INTERVAL_MS = 8000;
 
 export default Home;
