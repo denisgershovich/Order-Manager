@@ -1,4 +1,4 @@
-import { orders } from "../orderGenerator";
+import { orders, saveOrdersToFile } from "../orderGenerator";
 
 import { OrderStatus } from "../models/order";
 
@@ -25,6 +25,9 @@ const updateOrderStatus = (id: string, newStatus: OrderStatus) => {
   }
 
   order.status = newStatus;
+  order.updatedAt = new Date();
+
+  saveOrdersToFile(orders);
 
   return order;
 };

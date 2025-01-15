@@ -19,6 +19,7 @@ export interface Order {
   orderTime: Date;
   status: OrderStatus;
   subItems: SubItem[];
+  updatedAt: Date;
 }
 
 export interface PaginatedResponse {
