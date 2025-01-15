@@ -8,6 +8,6 @@ The system allows restaurant staff to view and manage orders, and track their pr
 
 To run the project, follow these steps to set up both the **back-end** and **front-end**.
 
-Navigate to the directory
-npm install
+Navigate to the directory ->
+npm install ->
 npm run dev
