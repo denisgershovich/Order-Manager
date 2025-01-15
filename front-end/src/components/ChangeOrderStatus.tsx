@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { OrderStatus } from "../types/api.types";
 import Select from "./Select";
+import { BASE_API_URL } from "../utils";
 
 const ChangeOrderStatus = ({
   id,
@@ -18,7 +19,7 @@ const ChangeOrderStatus = ({
 
   const updateOrderStatus = async (status: string) => {
     const response = await fetch(
-      `http://localhost:3000/api/orders/${id}/status`,
+      `${BASE_API_URL}/orders/${id}/status`,
       {
         method: "PATCH",
         headers: {
