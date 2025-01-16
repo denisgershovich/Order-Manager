@@ -17,7 +17,7 @@ export interface Order {
   title: string;
   location: { lat: number; lng: number };
   orderTime: Date;
-  updatedAt: Date;
+  updatedAt: string | null;
   status: OrderStatus;
   subItems: SubItem[];
 }

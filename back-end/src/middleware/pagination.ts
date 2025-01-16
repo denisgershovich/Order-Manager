@@ -9,10 +9,16 @@ const paginatedResults = (serviceFunction: Function) => {
     const { filter } = req.query;
 
     try {
-      const { results, totalCount } = serviceFunction(page, limit, filter);
+      const { results, totalCount, count } = serviceFunction(
+        page,
+        limit,
+        filter
+      );
 
       const response: PaginatedResponse<Order> = {
         results,
+        totalCount,
+        count,
       };
 
       if (page * limit < totalCount) {
@@ -33,6 +39,8 @@ const paginatedResults = (serviceFunction: Function) => {
 
 interface PaginatedResponse<T> {
   results: T[];
+  totalCount: number;
+  count: number;
   next?: {
     page: number;
     limit: number;

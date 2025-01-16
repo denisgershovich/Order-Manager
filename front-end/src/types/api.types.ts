@@ -23,6 +23,8 @@ export interface Order {
 }
 
 export interface PaginatedResponse {
+  totalCount: number;
+  count: number;
   next?: {
     page: number;
     limit: number;

@@ -12,9 +12,10 @@ const getPaginatedOrders = (page: number, limit: number, filter: string) => {
       : orders;
 
   const results = filteredOrders.slice(startIndex, endIndex);
-  const totalCount = filteredOrders.length;
+  const totalCount = orders.length;
+  const count = results.length;
 
-  return { results, totalCount };
+  return { results, count, totalCount };
 };
 
 const updateOrderStatus = (id: string, newStatus: OrderStatus) => {
@@ -25,7 +26,7 @@ const updateOrderStatus = (id: string, newStatus: OrderStatus) => {
   }
 
   order.status = newStatus;
-  order.updatedAt = new Date();
+  order.updatedAt = new Date().toISOString();
 
   saveOrdersToFile(orders);
 

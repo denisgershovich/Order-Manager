@@ -36,7 +36,6 @@ const createFakeOrders = (): void => {
     const orderTime = faker.date.recent();
     const status = faker.helpers.arrayElement(orderStatus);
     const subItems = generateSubItems();
-    const updatedAt = new Date();
 
     const order: Order = {
       id: i + 1,
@@ -45,7 +44,7 @@ const createFakeOrders = (): void => {
       orderTime,
       status,
       subItems,
-      updatedAt,
+      updatedAt: null,
     };
 
     orders.push(order);
