@@ -1,3 +1,4 @@
+import clsx from "clsx";
 interface SelectProps {
   id: string;
   options: string[];
@@ -5,6 +6,7 @@ interface SelectProps {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   disabled?: boolean;
+  className?: string
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -14,11 +16,12 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   label,
   disabled,
+  className
 }) => {
   return (
-    <div className="flex items-center">
+    <div className={clsx("flex items-center", className)}>
       {!!label && (
-        <label htmlFor={id} className="text-sm font-medium">
+        <label htmlFor={id} className="text-sm font-semibold">
           {label}
         </label>
       )}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import clsx from "clsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import Order from "./Order";
@@ -45,20 +46,17 @@ const Home = () => {
   if (isError) return <div>Error Fetching Data</div>;
 
   return (
-    <div className="flex border p-2 gap-2">
-      <div className="flex flex-col grow w-full max-h-[90vh] ">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <Select
-              id="sortKey"
-              options={SORT_OPTIONS}
-              value={sortKey || ""}
-              onChange={(e) =>
-                setSortKey(e.target.value ? (e.target.value as SortKey) : null)
-              }
-              label="Sort By:"
-            />
-          </div>
+    <section className="flex-grow overflow-auto flex p-2 gap-2 max-h-full">
+      <div className="flex flex-col gap-1 grow w-full h-full">
+        <div className="flex items-center justify-between">
+          <Select
+            id="sortKey"
+            options={SORT_OPTIONS}
+            value={sortKey || ""}
+            onChange={({ target: { value } }) => setSortKey(value as SortKey)}
+            label="Sort By:"
+            className="flex items-center"
+          />
 
           <Switch
             onToggle={(checked: boolean) =>
@@ -69,14 +67,15 @@ const Home = () => {
           />
         </div>
 
-        <ul className="flex flex-col overflow-y-scroll ">
+        <ul className="flex flex-col overflow-y-scroll">
           {sortedOrders.map(({ id, title, orderTime, status }) => (
             <li
               key={id}
-              className={`w-full ${selectedOrderId === id
-                ? "bg-blue-300"
-                : "bg-gray-200 hover:bg-opacity-0"
-                }`}>
+              className={clsx(
+                "w-full bg-gray-200 hover:bg-opacity-0",
+                selectedOrderId === id && "!bg-blue-300",
+              )}
+            >
               <Order
                 id={id}
                 title={title}
@@ -92,10 +91,11 @@ const Home = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
-              className={`py-2 px-4 rounded-lg font-semibold w-10${isFetchingNextPage
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                }`}>
+              className={clsx(
+                "py-2 px-4 rounded-lg font-semibold w-10 bg-blue-500 hover:bg-blue-600 focus:outline-none",
+                isFetchingNextPage && "!bg-gray-400 cursor-not-allowed"
+              )}
+            >
               {isFetchingNextPage ? "Loading more..." : "Load More"}
             </button>
           )}
@@ -103,9 +103,10 @@ const Home = () => {
       </div>
 
       <div className="grow flex flex-col w-full">
-        <div className="flex grow w-full h-full">
-          <OrderItems subItems={selectedOrder?.subItems || []} />
-        </div>
+        <OrderItems
+          className="flex flex-col grow w-full h-full py-1.5"
+          subItems={selectedOrder?.subItems || []}
+        />
 
         <div className="flex grow w-full h-full">
           <Map
@@ -114,7 +115,7 @@ const Home = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

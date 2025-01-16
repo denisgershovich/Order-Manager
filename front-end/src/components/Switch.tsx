@@ -36,7 +36,7 @@ const Switch: FC<SwitchProps> = ({ onToggle, label, isChecked }) => {
       />
       {!!label && (
         <label
-          className="inline-block pl-[0.15rem] hover:cursor-pointer"
+          className="inline-block pl-[0.15rem] hover:cursor-pointer font-semibold"
           htmlFor="switchCheck">
           {label}
         </label>

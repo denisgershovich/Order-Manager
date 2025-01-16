@@ -1,17 +1,19 @@
-import { type SubItem } from "../types/api.types";
+import clsx from "clsx";
 
+import { type SubItem } from "../types/api.types";
 interface OrderItemsProps {
   subItems: SubItem[];
+  className?: string
 }
 
-const OrderItems: React.FC<OrderItemsProps> = ({ subItems }) => {
+const OrderItems: React.FC<OrderItemsProps> = ({ subItems, className }) => {
   if (subItems.length === 0) return <>No Items</>;
 
   return (
-    <div className="border w-full">
-      <h3 className="font-semibold">Order Items:</h3>
+    <div className={clsx(className)}>
+      <h6 className="font-semibold">Order Items:</h6>
 
-      <ul className="list-none p-0">
+      <ul>
         {subItems.map((subItem, index) => (
           <li
             key={index}

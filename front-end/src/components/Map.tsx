@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 
 const Map = ({ lat, lng }: { lat: number; lng: number }) => {
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div className="h-full w-full">
       <MapContainer
         key={`${lat}-${lng}`}
         center={[lat, lng]}

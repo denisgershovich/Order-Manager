@@ -1,14 +1,13 @@
-
 import Home from './components/Home';
 
 import Header from './components/Header';
 
 function App() {
   return (
-    <main>
+    <div className="flex flex-col h-screen">
       <Header />
       <Home />
-    </main>
+    </div>
   )
 }
 

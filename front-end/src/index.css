@@ -10,14 +10,17 @@
   box-sizing: border-box;
 }
 
-/*  Set a consistent font size and font family */
+html,
 body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #333;
   background-color: #f3f4f6;
-  /* Use system fonts for performance */
 }
 
 a {
@@ -25,25 +28,8 @@ a {
   color: inherit;
 }
 
-/* Remove list styles (bullets, numbers, etc.) from ul, ol */
 ul,
 ol {
   list-style: none;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 100%; /* 16px */
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}

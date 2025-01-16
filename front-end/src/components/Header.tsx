@@ -1,9 +1,8 @@
 const Header = () => (
-  <header className="bg-white px-4 lg:px-6 py-2.5 shadow-sm ">
-    <nav className="flex items-center justify-between">
-      <h1 className=" font-bold"> Pizza Manger</h1>
-    </nav>
+  <header className="flex justify-between py-5 px-2 items-center bg-white">
+    <h1 className="text-xl text-gray-800 font-bold">Order Manager</h1>
   </header>
 );
 
 export default Header;
+

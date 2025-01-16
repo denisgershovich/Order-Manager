@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useCallback } from "react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { OrderStatus } from "../types/api.types";
 import Select from "./Select";
-import { BASE_API_URL } from "../utils";
+import { OrderStatus } from "../types/api.types";
+import { BASE_API_URL, statusOptions } from "../utils";
+
 
 const ChangeOrderStatus = ({
   id,
@@ -13,8 +14,6 @@ const ChangeOrderStatus = ({
   id: number;
   currentStatus: OrderStatus;
 }) => {
-  const statusOptions = useMemo(() => Object.values(OrderStatus), []);
-
   const queryClient = useQueryClient();
 
   const updateOrderStatus = async (status: string) => {
@@ -43,11 +42,11 @@ const ChangeOrderStatus = ({
     },
   });
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     event.stopPropagation();
 
     updateStatus(event.target.value);
-  };
+  }, [updateStatus])
 
   return (
     <Select
@@ -55,7 +54,7 @@ const ChangeOrderStatus = ({
       options={statusOptions}
       value={currentStatus}
       onChange={handleStatusChange}
-      label="update status:"
+      label="update status"
       disabled={isPending}
     />
   );

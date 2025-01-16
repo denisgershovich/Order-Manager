@@ -1,4 +1,4 @@
-import { type Order } from "./types/api.types";
+import { OrderStatus, type Order } from "./types/api.types";
 import { SortKey } from "./types/types";
 
 export const BASE_API_URL =
@@ -25,5 +25,7 @@ export const sortOrders = (
     }
   });
 };
+
+export const statusOptions = Object.values(OrderStatus);
 
 export const SORT_OPTIONS = ["Default (Unsorted)", ...Object.values(SortKey)];
