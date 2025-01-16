@@ -24,24 +24,17 @@ const Home = () => {
     isFetchingNextPage,
     isLoading,
     isError,
-    dataUpdatedAt
+
   } = useInfiniteQuery({
     queryKey: ["orders", { filter: hasUndeliveredOrdersFilter }],
-    queryFn: ({ pageParam = 1, queryKey }) => {
-      const lastFetchedAt: string = String(dataUpdatedAt)
-
-      return fetchPage({ pageParam, queryKey, lastFetchedAt })
-    },
+    queryFn: ({ pageParam = 1, queryKey }) => fetchPage({ pageParam, queryKey }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.next?.page || undefined,
-    getPreviousPageParam: (firstPage) => firstPage.previous?.page || undefined,
+    getNextPageParam: (lastPage) => lastPage.next?.page,
+    getPreviousPageParam: (firstPage) => firstPage.previous?.page,
     refetchInterval: INTERVAL_MS,
   });
 
-  const flattenOrders: OrderType[] = useMemo(
-    () => data?.pages.flatMap((page) => page.results) || [],
-    [data?.pages],
-  );
+  const flattenOrders: OrderType[] = useMemo(() => data?.pages.flatMap((page) => page.results) || [], [data?.pages]);
 
   const sortedOrders = useMemo(() => sortOrders(flattenOrders, sortKey), [flattenOrders, sortKey]);
 
@@ -128,16 +121,12 @@ const Home = () => {
 const fetchPage = async ({
   pageParam = 1,
   queryKey,
-  lastFetchedAt
 }: {
   pageParam: number;
   queryKey: (string | {
     filter: boolean;
   })[];
-  lastFetchedAt: string;
-
 }): Promise<PaginatedResponse> => {
-
   const { filter } = queryKey[1] as {
     filter: boolean;
   }
@@ -147,7 +136,6 @@ const fetchPage = async ({
   const params: Record<string, string> = {
     page: pageParam.toString(),
     limit: "10",
-    lastFetchedAt,
     ...(filter && {
       filter: "notDelivered",
     }),
@@ -162,6 +150,6 @@ const fetchPage = async ({
   return response.json();
 };
 
-const INTERVAL_MS = 8000;
+const INTERVAL_MS = 10000;
 
 export default Home;
