@@ -50,7 +50,7 @@ const ChangeOrderStatus = ({
       options={statusOptions}
       value={currentStatus}
       onChange={handleStatusChange}
-      label="update status"
+      label="Update status"
       disabled={isPending}
     />
   );

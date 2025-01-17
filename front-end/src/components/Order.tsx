@@ -2,6 +2,7 @@ import { type FC } from "react";
 
 import { type Order as OrderType } from "../types/api.types";
 import ChangeOrderStatus from "./ChangeOrderStatus";
+import { orderStatusToColor } from "@/utils";
 
 interface OrderProps
   extends Pick<OrderType, "title" | "orderTime" | "status" | "id"> {
@@ -19,19 +20,22 @@ const Order: FC<OrderProps> = ({
 }) => {
   return (
     <li onClick={onOrderClick} className={className}>
-      <span>
-        <strong>Title:</strong> {title}
-      </span>
+      <div className="flex flex-col gap-2">
+        <span>
+          <strong>Title:</strong> {title}
+        </span>
 
-      <span className="flex gap-2 items-center justify-between  w-full">
-        <strong>Status: {status}</strong>
+        <span style={{ color: orderStatusToColor[status] }}>
+          <strong className="text-black">Status:</strong> {status}
+        </span>
 
-        <ChangeOrderStatus currentStatus={status} id={id} />
-      </span>
+        <span>
+          <strong>Order Time:</strong>
+          <time> {new Date(orderTime).toLocaleString()}</time>
+        </span>
+      </div>
 
-      <span>
-        <strong>Order Time:</strong> {new Date(orderTime).toLocaleString()}
-      </span>
+      <ChangeOrderStatus currentStatus={status} id={id} />
     </li>
   );
 };

@@ -8,7 +8,7 @@ import Switch from "./Switch";
 import OrderItems from "./OrderItems";
 import Map from "./Map";
 import Select from "./Select";
-import { Order as OrderType, type PaginatedResponse } from "../types/api.types";
+import { OrderStatus, Order as OrderType, type PaginatedResponse } from "../types/api.types";
 import { BASE_API_URL, SORT_OPTIONS, sortOrders } from "../utils";
 import { SortKey } from "../types/types";
 import { Button } from "./ui/button";
@@ -46,7 +46,7 @@ const Home = () => {
   if (isError) return <div>Error Fetching Data</div>;
 
   return (
-    <section className="flex-grow overflow-auto flex p-2 gap-2 max-h-full">
+    <section className="flex-grow overflow-auto flex p-4 gap-2 max-h-full">
       <div className="flex flex-col gap-1 grow w-full h-full">
         <div className="flex items-center justify-between">
           <Select
@@ -67,18 +67,18 @@ const Home = () => {
           />
         </div>
 
-        <ul className="flex flex-col overflow-y-scroll py-2 divide-y divide-gray-200">
+        <ul className="flex flex-col overflow-y-scroll p-2 rounded-lg w-full gap-2 ">
           {sortedOrders.map(({ id, title, orderTime, status }) => (
             <Order
               key={id}
               id={id}
               title={title}
               orderTime={orderTime}
-              status={status}
+              status={OrderStatus[status as keyof typeof OrderStatus]}
               onOrderClick={() => setSelectedOrderId(id)}
               className={clsx(
-                "w-full hover:bg-opacity-0 flex flex-col items-start text-left p-2",
-                selectedOrderId === id && "!bg-blue-300",
+                "w-full hover:bg-gray-200 flex justify-between items-start text-left p-2 rounded-lg shadow",
+                selectedOrderId === id && "!bg-gray-300",
               )}
             />
           ))}

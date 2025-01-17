@@ -11,21 +11,21 @@ const OrderItems: React.FC<OrderItemsProps> = ({ subItems, className }) => {
 
   return (
     <div className={clsx(className)}>
-      <h6 className="font-semibold">Order Items:</h6>
+      <span className="font-light">Order Items:</span>
 
-      <ul>
+      <ul className="flex flex-col gap-2 p-2 rounded-lg">
         {subItems.map((subItem, index) => (
           <li
             key={index}
-            className="border-b py-2 flex justify-between items-center px-2">
+            className="w-full flex justify-between items-start text-left p-2 rounded-lg shadow">
             <div className="flex flex-col">
-              <span className="font-semibold">{subItem.title}</span>
+              <span className="font-medium">{subItem.title}</span>
               <span className="text-sm text-gray-500">{subItem.type}</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <span className="text-md">
               Amount: {subItem.amount}
-            </div>
+            </span>
           </li>
         ))}
       </ul>
