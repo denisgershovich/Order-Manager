@@ -23,6 +23,14 @@ export const sortOrders = (orders: Order[], sortKey: SortKey): Order[] => {
   });
 };
 
+export const orderStatusToColor = {
+  [OrderStatus.Received]: "#3b82f6",
+  [OrderStatus.Preparing]: "#eab308",
+  [OrderStatus.Ready]: "#22c55e",
+  [OrderStatus.EnRoute]: "#ec4899",
+  [OrderStatus.Delivered]: "#34d399",
+};
+
 export const statusOptions = Object.entries(OrderStatus);
 
 export const SORT_OPTIONS = Object.entries(SortKey);
