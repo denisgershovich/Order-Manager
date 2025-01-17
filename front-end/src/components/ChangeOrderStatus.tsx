@@ -42,11 +42,7 @@ const ChangeOrderStatus = ({
     },
   });
 
-  const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.stopPropagation();
-
-    updateStatus(event.target.value);
-  }, [updateStatus])
+  const handleStatusChange = useCallback((value: string) => updateStatus(value), [updateStatus])
 
   return (
     <Select

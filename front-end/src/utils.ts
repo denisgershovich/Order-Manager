@@ -4,10 +4,7 @@ import { SortKey } from "./types/types";
 export const BASE_API_URL =
   process.env.REACT_APP_BASE_API_URL || "http://localhost:3000/api";
 
-export const sortOrders = (
-  orders: Order[],
-  sortKey: SortKey | null
-): Order[] => {
+export const sortOrders = (orders: Order[], sortKey: SortKey): Order[] => {
   if (!sortKey) return orders;
 
   return [...orders].sort((a, b) => {
@@ -26,6 +23,6 @@ export const sortOrders = (
   });
 };
 
-export const statusOptions = Object.values(OrderStatus);
+export const statusOptions = Object.entries(OrderStatus);
 
-export const SORT_OPTIONS = ["Default (Unsorted)", ...Object.values(SortKey)];
+export const SORT_OPTIONS = Object.entries(SortKey);

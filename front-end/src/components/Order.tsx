@@ -18,7 +18,7 @@ const Order: FC<OrderProps> = ({
   className,
 }) => {
   return (
-    <button onClick={onOrderClick} className={className}>
+    <li onClick={onOrderClick} className={className}>
       <span>
         <strong>Title:</strong> {title}
       </span>
@@ -32,7 +32,7 @@ const Order: FC<OrderProps> = ({
       <span>
         <strong>Order Time:</strong> {new Date(orderTime).toLocaleString()}
       </span>
-    </button>
+    </li>
   );
 };
 

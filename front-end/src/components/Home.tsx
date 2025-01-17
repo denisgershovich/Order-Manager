@@ -11,10 +11,11 @@ import Select from "./Select";
 import { Order as OrderType, type PaginatedResponse } from "../types/api.types";
 import { BASE_API_URL, SORT_OPTIONS, sortOrders } from "../utils";
 import { SortKey } from "../types/types";
+import { Button } from "./ui/button";
 
 const Home = () => {
   const [selectedOrderId, setSelectedOrderId] = useState<number>(1);
-  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>(SortKey.Default);
   const [hasUndeliveredOrdersFilter, setHasUndeliveredOrdersFilter] =
     useState<boolean>(false);
 
@@ -25,7 +26,6 @@ const Home = () => {
     isFetchingNextPage,
     isLoading,
     isError,
-
   } = useInfiniteQuery({
     queryKey: ["orders", { filter: hasUndeliveredOrdersFilter }],
     queryFn: ({ pageParam = 1, queryKey }) => fetchPage({ pageParam, queryKey }),
@@ -52,8 +52,8 @@ const Home = () => {
           <Select
             id="sortKey"
             options={SORT_OPTIONS}
-            value={sortKey || ""}
-            onChange={({ target: { value } }) => setSortKey(value as SortKey)}
+            value={sortKey}
+            onChange={(value) => setSortKey(value as SortKey)}
             label="Sort By:"
             className="flex items-center"
           />
@@ -67,37 +67,26 @@ const Home = () => {
           />
         </div>
 
-        <ul className="flex flex-col overflow-y-scroll">
+        <ul className="flex flex-col overflow-y-scroll py-2 divide-y divide-gray-200">
           {sortedOrders.map(({ id, title, orderTime, status }) => (
-            <li
+            <Order
               key={id}
+              id={id}
+              title={title}
+              orderTime={orderTime}
+              status={status}
+              onOrderClick={() => setSelectedOrderId(id)}
               className={clsx(
-                "w-full bg-gray-200 hover:bg-opacity-0",
+                "w-full hover:bg-opacity-0 flex flex-col items-start text-left p-2",
                 selectedOrderId === id && "!bg-blue-300",
               )}
-            >
-              <Order
-                id={id}
-                title={title}
-                orderTime={orderTime}
-                status={status}
-                onOrderClick={() => setSelectedOrderId(id)}
-                className="w-full flex flex-col items-start text-left p-2"
-              />
-            </li>
+            />
           ))}
 
           {hasNextPage && (
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
-              className={clsx(
-                "py-2 px-4 rounded-lg font-semibold w-10 bg-blue-500 hover:bg-blue-600 focus:outline-none",
-                isFetchingNextPage && "!bg-gray-400 cursor-not-allowed"
-              )}
-            >
+            <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
               {isFetchingNextPage ? "Loading more..." : "Load More"}
-            </button>
+            </Button>
           )}
         </ul>
       </div>

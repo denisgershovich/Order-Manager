@@ -1,9 +1,11 @@
 import clsx from "clsx";
+import * as  ShadcnSelect from "@/components/ui/select";
+import { Label } from "@/components/ui/label"
 interface SelectProps {
   id: string;
-  options: string[];
+  options: string[][];
   value: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (value: string) => void;
   label: string;
   disabled?: boolean;
   className?: string
@@ -19,24 +21,24 @@ const Select: React.FC<SelectProps> = ({
   className
 }) => {
   return (
-    <div className={clsx("flex items-center", className)}>
+    <div className={clsx("flex items-center space-x-2", className)}>
       {!!label && (
-        <label htmlFor={id} className="text-sm font-semibold">
-          {label}
-        </label>
+        <Label htmlFor={id}>{label}</Label>
       )}
-      <select
-        id={id}
-        disabled={disabled}
-        value={value}
-        onChange={onChange}
-        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-        {options.map((option) => (
-          <option key={option} value={option} disabled={option === value}>
-            {option}
-          </option>
-        ))}
-      </select>
+
+      <ShadcnSelect.Select name={id} value={value} disabled={disabled} onValueChange={onChange}>
+        <ShadcnSelect.SelectTrigger className="w-[180px]">
+          <ShadcnSelect.SelectValue />
+        </ShadcnSelect.SelectTrigger>
+
+        <ShadcnSelect.SelectContent>
+          {options.map(([optionKey, optionValue]) => (
+            <ShadcnSelect.SelectItem key={optionKey} value={optionKey} disabled={optionKey === value}>
+              {optionValue}
+            </ShadcnSelect.SelectItem>
+          ))}
+        </ShadcnSelect.SelectContent>
+      </ShadcnSelect.Select>
     </div>
   );
 };
