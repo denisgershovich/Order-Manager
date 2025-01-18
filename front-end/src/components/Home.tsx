@@ -53,7 +53,7 @@ const Home = () => {
             id="sortKey"
             options={SORT_OPTIONS}
             value={sortKey}
-            onChange={(value) => setSortKey(value as SortKey)}
+            onChange={(value) => setSortKey(value)}
             label="Sort By:"
             className="flex items-center"
           />

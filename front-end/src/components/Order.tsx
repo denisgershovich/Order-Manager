@@ -1,7 +1,7 @@
 import { type FC } from "react";
 
 import { type Order as OrderType } from "../types/api.types";
-import ChangeOrderStatus from "./ChangeOrderStatus";
+import OrderStatusUpdater from "./OrderStatusUpdater";
 import { orderStatusToColor } from "@/utils";
 
 interface OrderProps
@@ -35,7 +35,7 @@ const Order: FC<OrderProps> = ({
         </span>
       </div>
 
-      <ChangeOrderStatus currentStatus={status} id={id} />
+      <OrderStatusUpdater currentStatus={status} id={id} />
     </li>
   );
 };

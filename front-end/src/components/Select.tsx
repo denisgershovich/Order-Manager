@@ -1,17 +1,17 @@
 import clsx from "clsx";
 import * as  ShadcnSelect from "@/components/ui/select";
 import { Label } from "@/components/ui/label"
-interface SelectProps {
+interface SelectProps<T> {
   id: string;
-  options: string[][];
-  value: string;
-  onChange: (value: string) => void;
+  options: [key: string, value: T][];
+  value: T;
+  onChange: (value: T) => void;
   label: string;
   disabled?: boolean;
-  className?: string
+  className?: string;
 }
 
-const Select: React.FC<SelectProps> = ({
+const Select = <T extends string>({
   id,
   options,
   value,
@@ -19,7 +19,7 @@ const Select: React.FC<SelectProps> = ({
   label,
   disabled,
   className
-}) => {
+}: SelectProps<T>) => {
   return (
     <div className={clsx("flex items-center space-x-2", className)}>
       {!!label && (
